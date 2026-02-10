@@ -1,5 +1,13 @@
+Non-Commercial License
 Copyright (c) 2026 Alexey Nikandrov. All rights reserved.
 
-Permission is granted for non-commercial use only.
-Commercial use requires explicit written permission from the author.
-All rights reserved.
+"Non-commercial use" means personal, educational, research
+or non-profit purposes without monetary gain.
+
+Permission is granted for non-commercial use, copying,
+modification and distribution with attribution to this repository.
+Commercial use (including but not limited to selling, SaaS,
+enterprise services) requires explicit written permission from
+the author.
+
+Contact: classx@gmail.com
