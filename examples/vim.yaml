@@ -1,0 +1,57 @@
+version: 1
+
+profiles:
+  vim:
+    description: "Vim editor profile: project write, system read/exec, cache write"
+
+    access_roots:
+      projects:
+        paths:
+          - ~/9
+        permissions:
+          read_file: true
+          read_dir: true
+          execute: false
+          write_file: true
+          remove_file: true
+          remove_dir: false
+          truncate: true
+
+      system:
+        paths:
+          - /usr
+          - /lib
+          - /lib64
+        permissions:
+          read_file: true
+          read_dir: true
+          execute: true
+
+      cache:
+        paths:
+          - ~/.cache/vim
+          - ~/.vim/tmp
+          - ~/.local/share/nvim
+          - ~/.cache/nvim
+        permissions:
+          read_file: true
+          read_dir: true
+          write_file: true
+          remove_file: true
+
+    control_access:
+      read_file: true
+      read_dir: true
+      execute: true
+      write_file: true
+      remove_file: true
+      remove_dir: false
+      truncate: true
+
+    command:
+      binary: vim
+      args:
+        - .
+      working_dir: ~/9
+    log_level: info
+    dry_run: false

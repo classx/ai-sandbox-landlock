@@ -1,0 +1,55 @@
+version: 1
+profiles:
+  myproj:
+    description: Generated profile for myproj
+    access_roots:
+      projects:
+        paths:
+        - /home/anikandr/fixes/general/private/projects/ai-sandbox-landlock
+        permissions:
+          read_file: true
+          read_dir: true
+          execute: false
+          write_file: false
+          remove_file: false
+          remove_dir: false
+          truncate: false
+      system:
+        paths:
+        - /usr
+        - /lib
+        - /lib64
+        permissions:
+          read_file: true
+          read_dir: true
+          execute: true
+          write_file: false
+          remove_file: false
+          remove_dir: false
+          truncate: false
+      cache:
+        paths:
+        - ~/.ai-sandbox/cache
+        permissions:
+          read_file: true
+          read_dir: true
+          execute: false
+          write_file: true
+          remove_file: true
+          remove_dir: false
+          truncate: false
+    control_access:
+      read_file: true
+      read_dir: true
+      execute: true
+      write_file: false
+      remove_file: false
+      remove_dir: false
+      truncate: false
+    command:
+      binary: /bin/bash
+      args: []
+      working_dir: /home/anikandr/fixes/general/private/projects/ai-sandbox-landlock
+      env: null
+    log_level: info
+    dry_run: false

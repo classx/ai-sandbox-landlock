@@ -1,0 +1,116 @@
+.TH AI-SANDBOX-LANDLOCK 1 "February 2026" "ai-sandbox-landlock" "User Commands"
+.SH NAME
+ai-sandbox-landlock \- minimal Landlock-based launcher
+.SH SYNOPSIS
+.B ai-sandbox-landlock
+[\-\-config \fIPATH\fR] [\-\-profile \fINAME\fR] [\-\-root \fIPATH\fR] [\-\-read-only]
+[\-\-check] [\-\-dry-run] [\-\-require-landlock] [\-\-log-level \fILEVEL\fR] [\-\-no-color]
+[\-\-print-config] [\-\-print-ruleset] [\-\-generate-profile] [\-\-gen-name \fINAME\fR]
+[\-\-output \fIPATH\fR] [\-\-]
+\fICMD\fR [\fIARGS\fR...]
+.SH DESCRIPTION
+.B ai-sandbox-landlock
+runs a command in a restricted environment using the Linux Landlock LSM. It supports two modes:
+.TP
+Profile mode
+Filesystem restrictions and permissions are described in a YAML profile file.
+.TP
+Root mode
+Restricts filesystem access to a single project root.
+.PP
+The launcher is ABI-aware: it reports rights that will be ignored if the current kernel ABI does not support them.
+It provides CLI flags for capability checking, printing rules, dry-run, strict mode, logging, and profile generation.
+.SH OPTIONS
+.TP
+.B \-\-config \fIPATH\fR
+Path to a YAML configuration file (schema version 1). Requires \fB\-\-profile\fR.
+.TP
+.B \-\-profile \fINAME\fR
+Profile name to load from the YAML config.
+.TP
+.B \-\-root \fIPATH\fR
+Project root for root mode. In profile mode it can be inferred from \fBaccess_roots.projects\fR.
+.TP
+.B \-\-read-only
+Enable read-only mode for \fB\-\-root\fR. Allows Execute. Default: false.
+.TP
+.B \-\-check
+Check Landlock availability (kernel version and LSM listing) and exit.
+.TP
+.B \-\-dry-run
+Build and print rules without enforcing or running.
+.TP
+.B \-\-require-landlock
+Fail if Landlock is not available. Default: false.
+.TP
+.B \-\-log-level \fILEVEL\fR
+Logging level: \fBerror\fR, \fBwarn\fR, \fBinfo\fR, \fBdebug\fR, \fBtrace\fR. Default: \fBinfo\fR.
+.TP
+.B \-\-no-color
+Disable ANSI-colored logs. Useful for CI/pipes.
+.TP
+.B \-\-print-config
+Print the selected profile or current parameters and exit.
+.TP
+.B \-\-print-ruleset
+Print the assembled ruleset and exit.
+.TP
+.B \-\-generate-profile
+Generate a YAML profile based on the detected project root (git or \fB\-\-root\fR) and exit.
+.TP
+.B \-\-gen-name \fINAME\fR
+Name of the generated profile. Defaults to the basename of the project root.
+.TP
+.B \-\-output \fIPATH\fR
+Path to write the generated YAML. Prints to stdout if omitted.
+.TP
+.B \-\- \fICMD\fR [\fIARGS\fR...]
+Command to run inside the sandbox. In profile mode, it can be provided via \fBcommand.binary\fR / \fBcommand.args\fR.
+.SH CONFIGURATION
+Profiles are defined in YAML with schema version 1:
+.PP
+.nf
+version: 1
+profiles:
+  name:
+    description: "..."
+    access_roots:
+      system|cache|projects:
+        paths: ["/path", "~/path"]
+        permissions:
+          read_file: true|false
+          read_dir: true|false
+          execute: true|false
+          write_file: true|false
+          remove_file: true|false
+          remove_dir: true|false
+          truncate: true|false
+    control_access:
+      read_file|read_dir|execute|write_file|remove_file|remove_dir|truncate: true|false
+    command:
+      binary: "/bin/bash"
+      args: ["..."]
+      working_dir: "/path"
+      env: {KEY: VALUE}
+    log_level: info|warn|error|debug|trace
+    dry_run: true|false
+.fi
+.PP
+See the example profile: examples/ai-sandbox-landlock.yaml
+.SH EXAMPLES
+.TP
+Restrict to /usr and print rules without enforcing
+.B ai-sandbox-landlock --root /usr --read-only --print-ruleset
+.TP
+Run a command in sandbox
+.B ai-sandbox-landlock --root /path/to/project -- echo "hello"
+.TP
+Check Landlock availability
+.B ai-sandbox-landlock --check
+.TP
+Generate a profile to a file
+.B ai-sandbox-landlock --generate-profile --gen-name myproj --output myproj.yaml
+.SH EXIT STATUS
+Returns the exit code of the executed command if available; otherwise returns 1 when terminated by signal.
+.SH SEE ALSO
+README.md, SECURITY.md, landlock(7)

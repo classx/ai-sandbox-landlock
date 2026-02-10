@@ -1,0 +1,74 @@
+version: 1 # Configuration schema version; must be 1 for this tool
+
+profiles: # Top-level map of named sandbox profiles
+  vscode-copilot: # Profile tailored for VSCode + Copilot workflows
+    description: "VSCode + Copilot, access to projects + system directories" # Human-readable profile description
+
+    access_roots: # Groups of filesystem roots with per-group permissions
+      projects: # Project sources; primary writable workspace roots
+        paths: # List of project directories included in this group
+          - ~/dev/myproj # Project path; '~' expands to user's HOME at runtime
+          - ~/dev/shared-lib # Additional project path included in sandbox
+        permissions: # Allowed rights within the listed project paths
+          read_file: true # Allow reading regular files under project paths
+          read_dir: true # Allow listing/reading directories under project paths
+          execute: true # Allow executing files within project paths
+          write_file: true # Allow creating/modifying files under project paths
+          remove_file: true # Allow deleting files under project paths
+          remove_dir: false # Disallow deleting directories under project paths
+          truncate: true # Allow truncating files (e.g., via open(O_TRUNC))
+
+      system: # Read-only system directories required by tools/runtime
+        paths: # System roots visible inside the sandbox
+          - /usr # Typical location of system binaries and libraries
+          - /lib # System library directory (distro-dependent)
+          - /lib64 # 64-bit system libraries
+        permissions: # Rights within system paths (read/execute only)
+          read_file: true # Allow reading system files
+          read_dir: true # Allow listing system directories
+          execute: true # Allow executing system binaries/libraries
+
+      cache: # User cache directory with write access for tooling
+        paths: # Cache locations available to the sandboxed process
+          - ~/.ai-sandbox/cache # Dedicated cache under user's HOME
+        permissions: # Rights within cache paths (read/write/remove files)
+          read_file: true # Allow reading cache files
+          read_dir: true # Allow listing cache directories
+          write_file: true # Allow writing/updating cache files
+          remove_file: true # Allow removing cache files
+
+    control_access: # Global rights the ruleset will handle across all groups
+      read_file: true # Ruleset handles file reads (must be included to restrict)
+      read_dir: true # Ruleset handles directory reads/listing
+      execute: true # Ruleset handles file execution attempts
+      write_file: true # Ruleset handles file writes/creation/modification
+      remove_file: true # Ruleset handles file deletion operations
+      remove_dir: false # Ruleset does not handle directory deletions globally
+      truncate: true # Ruleset handles file truncation requests
+
+    command: # Command specification to run inside the sandbox
+      binary: code # Program to execute (VSCode launcher)
+      args: # Arguments passed to the binary
+        - . # Open current directory/project in VSCode
+      working_dir: ~/dev/myproj # Working directory for the command
+      env: # Environment variable overrides for the sandboxed process
+        HOME: ~/.ai-sandbox/vscode-home # Override HOME to isolate VSCode user data
+    log_level: info # Logging verbosity for the launcher (error|warn|info|debug|trace)
+    dry_run: false # If true, only print ruleset/config and do not enforce/run
+
+  minimal: # Simplified profile granting read-only access to a single project
+    description: "Minimal access, single project read-only" # Profile description
+    access_roots: # Filesystem groups for this profile
+      projects: # Single project directory with read-only permissions
+        paths: # Project path included in sandbox
+          - ~/dev/test-project # The only project directory allowed
+        permissions: # Rights within the project (read-only)
+          read_file: true # Allow reading files
+          read_dir: true # Allow reading/listing directories
+    control_access: # Rights handled globally by the ruleset
+      read_file: true # Handle file reads
+      read_dir: true # Handle directory reads
+      execute: false # Do not handle execution; effectively disallow execution
+    command: # Command to run under this profile
+      binary: /bin/bash # Shell to start inside the sandbox
+      args: [] # No additional arguments
