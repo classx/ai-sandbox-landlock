@@ -40,7 +40,7 @@ Schema (simplified):
   - `log_level`: logging level.
   - `dry_run`: print rules without execution.
 
-See example: [private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.yaml](private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.yaml)
+See example: [examples/ai-sandbox-landlock.yaml](examples/ai-sandbox-landlock.yaml)
 
 ## Diagnostics and ABI
 - Maximum supported ABI is probed dynamically; if a right is unsupported, it appears under "ignored".
@@ -52,7 +52,7 @@ See example: [private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.
 ## Security
 - Landlock only tightens access; it does not undo DAC/SELinux/AppArmor.
 - Symlinks, previously opened file descriptors, and bind mounts may affect isolation.
-Details: [private/projects/ai-sandbox-landlock/SECURITY.md](private/projects/ai-sandbox-landlock/SECURITY.md)
+Details: [SECURITY.md](SECURITY.md)
 
 ## Profile Generation
 - `--generate-profile` creates a YAML profile automatically:

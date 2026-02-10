@@ -5,7 +5,7 @@ profiles:
     access_roots:
       projects:
         paths:
-        - /home/anikandr/fixes/general/private/projects/ai-sandbox-landlock
+          - ~/dev/project1
         permissions:
           read_file: true
           read_dir: true
@@ -16,9 +16,9 @@ profiles:
           truncate: false
       system:
         paths:
-        - /usr
-        - /lib
-        - /lib64
+          - /usr
+          - /lib
+          - /lib64
         permissions:
           read_file: true
           read_dir: true
@@ -29,7 +29,7 @@ profiles:
           truncate: false
       cache:
         paths:
-        - ~/.ai-sandbox/cache
+          - ~/.ai-sandbox/cache
         permissions:
           read_file: true
           read_dir: true
@@ -49,7 +49,7 @@ profiles:
     command:
       binary: /bin/bash
       args: []
-      working_dir: /home/anikandr/fixes/general/private/projects/ai-sandbox-landlock
+      working_dir: ~/dev/project1
       env: null
     log_level: info
     dry_run: false

@@ -7,7 +7,7 @@ profiles:
     access_roots:
       projects:
         paths:
-          - ~/9
+          - ~/dev/project1
         permissions:
           read_file: true
           read_dir: true
@@ -52,6 +52,6 @@ profiles:
       binary: vim
       args:
         - .
-      working_dir: ~/9
+      working_dir: ~/dev/project1
     log_level: info
     dry_run: false

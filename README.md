@@ -11,7 +11,8 @@ Local project build and run:
 
 ```bash
 # Build
-cd private/projects/ai-sandbox-landlock
+git clone git@github.com:classx/ai-sandbox-landlock.git
+cd ai-sandbox-landlock
 cargo build
 
 # Run capability check
@@ -81,7 +82,7 @@ Profiles file structure (simplified):
   - `command`: `binary`, `args`, `working_dir`, `env`.
   - `log_level`, `dry_run`: optional defaults per profile.
 
-See example: [private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.yaml](private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.yaml).
+See example: [examples/ai-sandbox-landlock.yaml](examples/ai-sandbox-landlock.yaml).
 
 ## Security Notes
 - Landlock tightens access; it doesn’t grant privileges beyond DAC/SELinux/AppArmor.
@@ -90,13 +91,13 @@ See example: [private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.
 - Bind mounts can expose external trees; consider combining with a mount namespace.
 - The launcher detects the maximum supported ABI and reports unsupported rights (ignored) in `--dry-run`/`--print-ruleset`.
 
-Details: [private/projects/ai-sandbox-landlock/SECURITY.md](private/projects/ai-sandbox-landlock/SECURITY.md).
+Details: [SECURITY.md](SECURITY.md).
 
 ## VSCode Integration (example)
 Wrap VSCode with the launcher for a project:
 ```bash
 # Example alias (adjust paths)
-alias code-sandbox='ai-sandbox-landlock --config ~/fixes/general/private/projects/ai-sandbox-landlock/examples/ai-sandbox-landlock.yaml --profile vscode-copilot --'
+alias code-sandbox='ai-sandbox-landlock --config examples/ai-sandbox-landlock.yaml --profile vscode-copilot --'
 # Run inside a project directory
 code-sandbox code .
 ```
