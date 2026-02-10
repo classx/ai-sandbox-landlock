@@ -119,3 +119,7 @@ Format/lint:
 cargo fmt
 cargo clippy --all-targets -- -D warnings
 ```
+
+
+---
+Non-commercial use only. Contact for commercial licensing.

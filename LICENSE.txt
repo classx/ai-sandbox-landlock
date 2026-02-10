@@ -1,0 +1,5 @@
+Copyright (c) 2026 Alexey Nikandrov. All rights reserved.
+
+Permission is granted for non-commercial use only.
+Commercial use requires explicit written permission from the author.
+All rights reserved.
